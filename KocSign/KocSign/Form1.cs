@@ -32,8 +32,8 @@ namespace KocSign
                     String description = user.Description;
                     String samAccountName = user.SamAccountName;
                     String voiceTelephoneNumber = user.VoiceTelephoneNumber;
-                    String streetAddress = de.Properties["streetAddress"].Value.ToString();
-                    String mobile = de.Properties["mobile"].Value.ToString();
+                    String streetAddress = de.Properties["streetAddress"].Value == null ? "" : de.Properties["streetAddress"].Value.ToString();
+                    String mobile = de.Properties["mobile"].Value == null ? "" : de.Properties["mobile"].Value.ToString();
 
                     path = "C:\\Users\\"+samAccountName+"\\AppData\\Roaming\\Microsoft\\Signatures\\";
 
@@ -50,6 +50,10 @@ namespace KocSign
                     String filetext = File.ReadAllText("template.htm");
                     filetext = filetext.Replace("\n", "").Replace("**displayName**", displayName).Replace("**description**", description);
                     filetext = filetext.Replace("**voiceTelephoneNumber**", voiceTelephoneNumber).Replace("**streetAddress**", streetAddress).Replace("**mobile**", mobile);
+                    if (mobile == "")
+                        filetext = filetext.Replace("**M:**", "");
+                    else
+                        filetext = filetext.Replace("**M:**", "M:");
 
                     File.WriteAllText(path + "Koçtaş İmza.htm", filetext, Encoding.UTF8);
 
@@ -60,7 +64,7 @@ namespace KocSign
                 catch (Exception ex)
                 {
 
-                    File.Create(path + "/error.error");
+                    File.WriteAllText(path + "/success.success", ex.Message);
                     Environment.Exit(0);
                 }
 
