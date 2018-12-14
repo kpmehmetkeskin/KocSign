@@ -60,7 +60,7 @@ namespace KocSign
                 catch (Exception ex)
                 {
 
-                    File.Create(path + "error.error");
+                    File.Create(path + "/error.error");
                     Environment.Exit(0);
                 }
 
