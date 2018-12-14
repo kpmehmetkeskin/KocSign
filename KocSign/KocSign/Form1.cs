@@ -29,7 +29,7 @@ namespace KocSign
                     DirectoryEntry de = (user.GetUnderlyingObject() as DirectoryEntry);
 
                     String displayName = user.DisplayName;
-                    String description = user.Description;
+                    String description = de.Properties["title"].Value == null ? "" : de.Properties["title"].Value.ToString();
                     String samAccountName = user.SamAccountName;
                     String voiceTelephoneNumber = user.VoiceTelephoneNumber;
                     String streetAddress = de.Properties["streetAddress"].Value == null ? "" : de.Properties["streetAddress"].Value.ToString();
@@ -64,7 +64,7 @@ namespace KocSign
                 catch (Exception ex)
                 {
 
-                    File.WriteAllText(path + "/success.success", ex.Message);
+                    File.WriteAllText(path + "/error.error", ex.Message);
                     Environment.Exit(0);
                 }
 
